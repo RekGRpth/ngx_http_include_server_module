@@ -18,7 +18,6 @@ static char *ngx_http_include_server_conf(ngx_conf_t *cf, ngx_command_t *cmd, vo
     ngx_str_t *args, *elts = cf->args->elts;
     if (!(mcf->args = ngx_array_create(cf->pool, cf->args->nelts, sizeof(*elts)))) return NGX_CONF_ERROR;
     for (ngx_uint_t i = 0; i < cf->args->nelts; i++) {
-        ngx_conf_log_error(NGX_LOG_EMERG, cf, 0, "conf elts[%i] = %V", i, &elts[i]);
         if (!(args = ngx_array_push(mcf->args))) return NGX_CONF_ERROR;
         *args = elts[i];
     }
@@ -56,12 +55,10 @@ static void *ngx_http_include_server_create_loc_conf(ngx_conf_t *cf) {
     scf->level++;
     ngx_http_include_server_main_conf_t *mcf = ngx_http_conf_get_module_main_conf(cf, ngx_http_include_server_module);
     if (!mcf->args) return lcf;
-    ngx_conf_log_error(NGX_LOG_EMERG, cf, 0, "create loc %i", cf->cmd_type);
     ngx_conf_t save = *cf;
     ngx_str_t *args, *elts = mcf->args->elts;
     if (!(cf->args = ngx_array_create(cf->pool, mcf->args->nelts, sizeof(*elts)))) return NULL;
     for (ngx_uint_t i = 0; i < mcf->args->nelts; i++) {
-        ngx_conf_log_error(NGX_LOG_EMERG, cf, 0, "create loc elts[%i] = %V", i, &elts[i]);
         if (!(args = ngx_array_push(cf->args))) return NULL;
         *args = elts[i];
     }
